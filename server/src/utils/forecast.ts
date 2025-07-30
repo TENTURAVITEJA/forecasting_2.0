@@ -1,5 +1,6 @@
 
-import ARIMA from 'arima';
+import _pkg from 'arima';
+const ARIMA: any = (_pkg as any).default ?? (_pkg as any);
 import { Frequency, Row } from '../types.js';
 import { step } from './resample.js';
 import { mape } from './metrics.js';
@@ -22,7 +23,7 @@ export function fitArimaAuto(series: number[]): FitResult {
     try {
       const arima = new ARIMA({ p, d, q, verbose: false }).train(train);
       const [pred] = arima.predict(valSize || 1);
-      const score = valSize ? mape(yTrue, Array.from(pred).slice(0, valSize)) : 0;
+      const score = valSize ? mape(yTrue, Array.from(pred).slice(0, valSize) as number[]) : 0;
       if (!best || score < best.mape) best = { order: [p, d, q], mape: score, model: arima };
     } catch {}
   }
