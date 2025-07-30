@@ -15,7 +15,9 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>
 
-const API = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api'
+// was: const API = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api';
+const API = import.meta.env.VITE_API_BASE || '/api';
+
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null)
