@@ -1,13 +1,52 @@
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Forecasting</title>
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f8ff;
+      }
+
+      header {
+        background: linear-gradient(90deg, #0077b6, #00b894);
+        color: white;
+        padding: 1rem 2rem;
+        font-size: 1.8rem;
+        font-weight: 600;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 3rem;
+        padding: 1rem;
+        color: #888;
+        font-size: 0.9rem;
+      }
+    </style>
   </head>
-  <body class="bg-gray-50">
-    <div id="root"></div>
+
+  <body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Blue-Green Header -->
+    <header>
+      📈 AI Forecasting Dashboard
+    </header>
+
+    <!-- React App Mount Point -->
+    <div id="root" class="flex-grow"></div>
+
+    <!-- Optional footer -->
+    <footer>
+      &copy; 2025 SmartForecast.ai — All rights reserved
+    </footer>
+
+    <!-- Load React App -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
