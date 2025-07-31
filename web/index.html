@@ -9,7 +9,7 @@
       body {
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f0f8ff;
+        background-color: #E0FFF7; /* light mint background */
       }
 
       header {
@@ -19,34 +19,83 @@
         font-size: 1.8rem;
         font-weight: 600;
         text-align: center;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-row {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+        padding: 0 1rem;
+      }
+
+      .section {
+        background-color: #ffffffcc; /* soft white with slight transparency */
+        border-left: 6px solid #00b894;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+        flex: 1 1 300px;
+        min-width: 280px;
+        max-width: 350px;
+        padding: 1.5rem;
+        backdrop-filter: blur(3px); /* subtle glass effect */
+      }
+
+      .section h2 {
+        font-size: 1.5rem;
+        color: #0077b6;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
 
       footer {
         text-align: center;
         margin-top: 3rem;
         padding: 1rem;
-        color: #888;
+        color: #555;
         font-size: 0.9rem;
       }
     </style>
   </head>
 
-  <body class="bg-gray-50 min-h-screen flex flex-col">
-    <!-- Blue-Green Header -->
+  <body class="min-h-screen flex flex-col">
+    <!-- Header -->
     <header>
       📈 AI Forecasting Model
     </header>
 
-    <!-- React App Mount Point -->
+    <!-- Section Row with 3 Horizontal Cards -->
+    <div class="section-row">
+      <div class="section">
+        <h2>📤 Upload</h2>
+        <p>Upload your Excel file (.xls/.xlsx) that contains historical sales data.</p>
+      </div>
+
+      <div class="section">
+        <h2>📈 Forecasting</h2>
+        <p>Our AI will analyze the data and predict upcoming sales trends.</p>
+      </div>
+
+      <div class="section">
+        <h2>📊 Visualize</h2>
+        <p>View charts and tables to clearly understand your future sales performance.</p>
+      </div>
+    </div>
+
+    <!-- React Root -->
     <div id="root" class="flex-grow"></div>
 
-    <!-- Optional footer -->
+    <!-- Footer -->
     <footer>
       &copy; 2025 SmartForecast.ai — All rights reserved
     </footer>
 
-    <!-- Load React App -->
+    <!-- React Entry -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
