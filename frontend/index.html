@@ -51,9 +51,9 @@
       <!-- Nav Tabs -->
       <nav class="flex gap-6 mb-10 text-sm font-semibold">
         <div class="nav-tab active px-4 py-2 rounded-md cursor-pointer">Upload Data</div>
-        <div class="nav-tab active px-4 py-2 rounded-md cursor-pointer">Preview & Validate</div>
-        <div class="nav-tab active px-4 py-2 rounded-md cursor-pointer">AI Forecast</div>
-        <div class="nav-tab active px-4 py-2 rounded-md cursor-pointer">Future Scope</div>
+        <div class="nav-tab px-4 py-2 rounded-md cursor-pointer">Preview & Validate</div>
+        <div class="nav-tab px-4 py-2 rounded-md cursor-pointer">AI Forecast</div>
+        <div class="nav-tab px-4 py-2 rounded-md cursor-pointer">Future Scope</div>
       </nav>
 
       <!-- Main Section -->
@@ -74,28 +74,28 @@
         <h2 class="section-title">📤 Upload & Forecast</h2>
         <form id="forecast-form" enctype="multipart/form-data" class="grid gap-4 md:grid-cols-2">
           <div>
-            <label class="block text-sm font-medium mb-1">Date column</label>
-            <input type="text" name="date_column" placeholder="e.g., Date" required class="mt-1 w-full border rounded px-3 py-2" />
+            <label for="date_column" class="block text-sm font-medium mb-1">Date column</label>
+            <input id="date_column" type="text" name="date_column" placeholder="e.g., Date" required class="mt-1 w-full border rounded px-3 py-2" />
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Value column</label>
-            <input type="text" name="value_column" placeholder="e.g., Sales" required class="mt-1 w-full border rounded px-3 py-2" />
+            <label for="value_column" class="block text-sm font-medium mb-1">Value column</label>
+            <input id="value_column" type="text" name="value_column" placeholder="e.g., Sales" required class="mt-1 w-full border rounded px-3 py-2" />
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Frequency</label>
-            <select name="frequency" class="mt-1 w-full border rounded px-3 py-2">
+            <label for="frequency" class="block text-sm font-medium mb-1">Frequency</label>
+            <select id="frequency" name="frequency" class="mt-1 w-full border rounded px-3 py-2">
               <option value="Daily">Daily</option>
               <option value="Weekly">Weekly</option>
               <option value="Monthly" selected>Monthly</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium mb-1">Horizon</label>
-            <input type="number" name="horizon" placeholder="e.g., 6" required class="mt-1 w-full border rounded px-3 py-2" />
+            <label for="horizon" class="block text-sm font-medium mb-1">Horizon</label>
+            <input id="horizon" type="number" name="horizon" placeholder="e.g., 6" required class="mt-1 w-full border rounded px-3 py-2" />
           </div>
           <div class="md:col-span-2">
-            <label class="block text-sm font-medium mb-1">File (CSV/XLSX)</label>
-            <input type="file" name="file" accept=".csv,.xlsx" required class="mt-1 w-full border rounded px-3 py-2" />
+            <label for="file" class="block text-sm font-medium mb-1">File (CSV/XLSX)</label>
+            <input id="file" type="file" name="file" accept=".csv,.xlsx" required class="mt-1 w-full border rounded px-3 py-2" />
           </div>
           <div class="md:col-span-2 flex justify-center">
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition">
@@ -107,10 +107,6 @@
         <p class="text-xs text-gray-500 mt-2">Supported: Excel (.xlsx), CSV (.csv)</p>
       </section>
       
-     <!-- React Root -->
-  
-     
-    
       <!-- Info Cards -->
       <div class="grid md:grid-cols-3 gap-6 mb-12">
         <div class="section-card bg-white">
@@ -145,65 +141,21 @@
       </section>
     </div>
 
-    <script type="module" src="/src/main.tsx"></script>
     <script type="module">
-      // Enable the RUN Forecasting button after a file is chosen
-      const input = document.getElementById('upload-input');
-      const btn = document.getElementById('run-forecast-btn');
-      const dateSelect = document.getElementById('dateColumn');
-      const salesSelect = document.getElementById('salesColumn');
-
-      // Mapping function: reads the uploaded file and populates the column selectors
-      input?.addEventListener('change', async () => {
-        btn.disabled = !input.files.length;
-
-        // Only proceed if a file is selected
-        if (input.files.length) {
-          const file = input.files[0];
-          // Only handle CSV for browser demo; for Excel/PDF, backend parsing is recommended
-          if (file.name.endsWith('.csv')) {
-            const text = await file.text();
-            const firstLine = text.split('\n')[0];
-            const columns = firstLine.replace(/\r/g, '').split(',');
-
-            // Clear previous options
-            dateSelect.innerHTML = '<option>-- Choose column --</option>';
-            salesSelect.innerHTML = '<option>-- Choose column --</option>';
-
-            // Populate options
-            columns.forEach(col => {
-              const opt1 = document.createElement('option');
-              opt1.value = col;
-              opt1.textContent = col;
-              dateSelect.appendChild(opt1);
-
-              const opt2 = document.createElement('option');
-              opt2.value = col;
-              opt2.textContent = col;
-              salesSelect.appendChild(opt2);
-            });
-          } else {
-            // For Excel/PDF, show a message or handle on backend
-            dateSelect.innerHTML = '<option>-- Choose column (CSV only in browser demo) --</option>';
-            salesSelect.innerHTML = '<option>-- Choose column (CSV only in browser demo) --</option>';
-          }
-        }
-      });
-
-      // Example: handle form submission (replace with your actual logic)
+      // Handle form submission and show a loading/result message
       document.getElementById('forecast-form')?.addEventListener('submit', async function(e) {
         e.preventDefault();
         const form = e.target;
         const data = new FormData(form);
         document.getElementById('result').innerHTML = '<span class="text-blue-700">Running forecast...</span>';
-        // TODO: Replace with your actual API endpoint
-        // Example:
-        // const res = await fetch('/api/forecast', { method: 'POST', body: data });
-        // const result = await res.json();
-        // document.getElementById('result').innerText = JSON.stringify(result, null, 2);
-        setTimeout(() => {
-          document.getElementById('result').innerHTML = '<span class="text-green-700">Forecast complete! (demo placeholder)</span>';
-        }, 2000);
+        try {
+          const res = await fetch('http://localhost:8000/api/forecast', { method: 'POST', body: data });
+          if (!res.ok) throw new Error('Forecast failed');
+          const result = await res.json();
+          document.getElementById('result').innerText = JSON.stringify(result, null, 2);
+        } catch (err) {
+          document.getElementById('result').innerHTML = '<span class="text-red-700">Error running forecast.</span>';
+        }
       });
     </script>
   </body>
