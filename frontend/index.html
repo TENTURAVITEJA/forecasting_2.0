@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Forecasting</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <div class="max-w-7xl mx-auto px-6 py-6">
+    <header class="flex items-center justify-between py-4 mb-8 border-b border-gray-200">
+      <div class="text-2xl font-bold text-emerald-600">AI Sales Forecaster</div>
+      <div class="text-sm bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">v3.0 Beta</div>
+    </header>
+
+    <main class="text-center mb-12">
+      <h1 class="text-3xl font-bold text-emerald-600 mb-4">Predict Your Sales</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto mb-6">
+        Upload your historical sales data and let our AI generate accurate forecasts.
+      </p>
+    </main>
+
+    <section class="bg-blue-100 p-6 rounded-lg border border-dashed border-blue-400 mb-12">
+      <h2 class="text-emerald-600 text-xl font-semibold mb-4">📤 Upload & Forecast</h2>
+      <form id="forecast-form" enctype="multipart/form-data" class="grid gap-4 md:grid-cols-2">
+        <input type="text" name="date_column" placeholder="Date column name" required class="border rounded px-3 py-2" />
+        <input type="text" name="value_column" placeholder="Value column name" required class="border rounded px-3 py-2" />
+        <select name="frequency" class="border rounded px-3 py-2">
+          <option value="Daily">Daily</option>
+          <option value="Weekly">Weekly</option>
+          <option value="Monthly" selected>Monthly</option>
+        </select>
+        <input type="number" name="horizon" placeholder="Forecast horizon" required class="border rounded px-3 py-2" />
+        <input type="file" name="file" accept=".csv,.xlsx" required class="md:col-span-2 border rounded px-3 py-2" />
+        <div class="md:col-span-2 flex justify-center">
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded">Run Forecast</button>
+        </div>
+      </form>
+      <div id="result" class="mt-6 text-sm text-left"></div>
+    </section>
+  </div>
+
+  <script>
+    document.getElementById('forecast-form')?.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+
+      const res = await fetch('http://localhost:8000/api/forecast', {
+        method: 'POST',
+        body: data
+      });
+
+      const result = await res.json();
+      const output = result.forecast.map(item => `<li>${item.ds}: ${item.yhat.toFixed(2)}</li>`).join('');
+      document.getElementById('result').innerHTML = `<ul>${output}</ul>`;
+    });
+  </script>
+</body>
+</html>
