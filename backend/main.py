@@ -54,3 +54,7 @@ async def forecast_sales(
         return JSONResponse(content={"forecast": output})
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
+@app.get("/")
+def root():
+    return {"message": "Backend is running"}
