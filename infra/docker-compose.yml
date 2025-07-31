@@ -1,22 +1,18 @@
+version: '3.9'
 
 services:
-  server:
-    build: ../server
+  python-backend:
+    build: ../python-backend
     ports:
-      - "4000:4000"
-    environment:
-      - PORT=4000
-      - CORS_ORIGIN=http://localhost:5173
+      - "8000:8000"
     volumes:
-      - ../server:/srv
-    command: npm run dev
+      - ../python-backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
   web:
     build: ../web
     ports:
       - "5173:5173"
-    environment:
-      - VITE_API_BASE=http://localhost:4000/api
     volumes:
-      - ../web:/usr/src/app
-    command: npm run dev -- --host
+      - ../web:/app
+    command: npm run dev
