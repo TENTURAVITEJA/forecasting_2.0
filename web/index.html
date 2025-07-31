@@ -69,21 +69,48 @@
         </div>
       </main>
 
-      <!-- Upload Section -->
+      <!-- Upload & Forecast Form Section -->
       <section class="bg-blue-100 p-6 rounded-lg border border-dashed border-blue-400 mb-12">
-        <h2 class="section-title">📤 Upload Historical Sales Data</h2>
-        <p class="text-blue-700 mb-4">Drag and drop your files here, or click to browse</p>
-        <input type="file" class="mx-auto block text-center mb-4" id="upload-input" />
-        <button
-          id="run-forecast-btn"
-          class="mx-auto block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition disabled:opacity-50"
-          disabled
-        >
-          RUN Forecasting
-        </button>
-        <p class="text-xs text-gray-500 mt-2">Supported: Excel (.xlsx, .xls), CSV (.csv), PDF (.pdf)</p>
+        <h2 class="section-title">📤 Upload & Forecast</h2>
+        <form id="forecast-form" enctype="multipart/form-data" class="grid gap-4 md:grid-cols-2">
+          <div>
+            <label class="block text-sm font-medium mb-1">Date column</label>
+            <input type="text" name="date_column" placeholder="e.g., Date" required class="mt-1 w-full border rounded px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Value column</label>
+            <input type="text" name="value_column" placeholder="e.g., Sales" required class="mt-1 w-full border rounded px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Frequency</label>
+            <select name="frequency" class="mt-1 w-full border rounded px-3 py-2">
+              <option value="Daily">Daily</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Monthly" selected>Monthly</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Horizon</label>
+            <input type="number" name="horizon" placeholder="e.g., 6" required class="mt-1 w-full border rounded px-3 py-2" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium mb-1">File (CSV/XLSX)</label>
+            <input type="file" name="file" accept=".csv,.xlsx" required class="mt-1 w-full border rounded px-3 py-2" />
+          </div>
+          <div class="md:col-span-2 flex justify-center">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition">
+              Run Forecast
+            </button>
+          </div>
+        </form>
+        <div id="result" class="mt-6"></div>
+        <p class="text-xs text-gray-500 mt-2">Supported: Excel (.xlsx), CSV (.csv)</p>
       </section>
-
+      
+     <!-- React Root -->
+  
+     
+    
       <!-- Info Cards -->
       <div class="grid md:grid-cols-3 gap-6 mb-12">
         <div class="section-card bg-white">
@@ -103,15 +130,17 @@
       <!-- Future Scope Section -->
       <section class="section-card bg-white mb-12">
         <h2 class="section-title">🚀 Future Scope</h2>
-        <p class="text-gray-700 mb-4">
-          The AI Sales Forecaster is continuously evolving. Future enhancements may include:
+        <p class="text-gray-700 mb-10">
+          The AI Sales Forecaster is continuously evolving. Below are six focused future enhancements, specifically targeting <b>Production Planning, Weather Enhancement,
         </p>
         <ul class="list-disc list-inside text-gray-600 text-sm space-y-2">
-          <li>Integration with ERP systems for live forecasting and inventory planning</li>
-          <li>Advanced anomaly detection for sudden market shifts</li>
-          <li>Multi-region demand forecasting using geospatial intelligence</li>
-          <li>Voice-enabled reporting and mobile push alerts</li>
-          <li>Custom model training based on your product categories</li>
+          <li><b>Weather-Driven Demand Forecasting</li>
+          <li><b>AI-Powered Production Scheduling</li>
+          <li><b>Automated Inventory Optimization</li>    
+          <li><b>Dynamic BOM Mapping</li>
+          <li><b>Raw Material Shortage Alerts </li>
+          <li><b>Adaptive Resource Allocation </li>
+          <li><b>Actionable Insights Dashboard </li>
         </ul>
       </section>
     </div>
@@ -121,8 +150,60 @@
       // Enable the RUN Forecasting button after a file is chosen
       const input = document.getElementById('upload-input');
       const btn = document.getElementById('run-forecast-btn');
-      input?.addEventListener('change', () => {
+      const dateSelect = document.getElementById('dateColumn');
+      const salesSelect = document.getElementById('salesColumn');
+
+      // Mapping function: reads the uploaded file and populates the column selectors
+      input?.addEventListener('change', async () => {
         btn.disabled = !input.files.length;
+
+        // Only proceed if a file is selected
+        if (input.files.length) {
+          const file = input.files[0];
+          // Only handle CSV for browser demo; for Excel/PDF, backend parsing is recommended
+          if (file.name.endsWith('.csv')) {
+            const text = await file.text();
+            const firstLine = text.split('\n')[0];
+            const columns = firstLine.replace(/\r/g, '').split(',');
+
+            // Clear previous options
+            dateSelect.innerHTML = '<option>-- Choose column --</option>';
+            salesSelect.innerHTML = '<option>-- Choose column --</option>';
+
+            // Populate options
+            columns.forEach(col => {
+              const opt1 = document.createElement('option');
+              opt1.value = col;
+              opt1.textContent = col;
+              dateSelect.appendChild(opt1);
+
+              const opt2 = document.createElement('option');
+              opt2.value = col;
+              opt2.textContent = col;
+              salesSelect.appendChild(opt2);
+            });
+          } else {
+            // For Excel/PDF, show a message or handle on backend
+            dateSelect.innerHTML = '<option>-- Choose column (CSV only in browser demo) --</option>';
+            salesSelect.innerHTML = '<option>-- Choose column (CSV only in browser demo) --</option>';
+          }
+        }
+      });
+
+      // Example: handle form submission (replace with your actual logic)
+      document.getElementById('forecast-form')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        document.getElementById('result').innerHTML = '<span class="text-blue-700">Running forecast...</span>';
+        // TODO: Replace with your actual API endpoint
+        // Example:
+        // const res = await fetch('/api/forecast', { method: 'POST', body: data });
+        // const result = await res.json();
+        // document.getElementById('result').innerText = JSON.stringify(result, null, 2);
+        setTimeout(() => {
+          document.getElementById('result').innerHTML = '<span class="text-green-700">Forecast complete! (demo placeholder)</span>';
+        }, 2000);
       });
     </script>
   </body>
