@@ -1,47 +1,54 @@
+# 🚀 AI-Powered Production Forecasting & Planning System
 
-# AI Forecasting Web App (Node.js + React)
+A modular, scalable, and user-friendly AI tool built to help manufacturing companies — especially MSMEs — accurately forecast demand, plan production, and optimize raw material inventory.
 
-A production-ready starter to ingest client-uploaded data (CSV/XLSX), parse to a standard schema,
-run **time-series forecasting** (ARIMA), and visualize results on a **React** dashboard.
+## 🧠 Project Summary
 
-## Stack
-- **Backend** (server): Node.js + TypeScript + Express, Multer uploads, CSV/XLSX parsing, ARIMA, Zod validation, CORS
-- **Frontend** (web): Vite + React + TypeScript + Tailwind + Recharts + React Hook Form + Zod
-- **Infra**: Docker Compose for local dev; GitHub Actions CI
+This FastAPI-powered system uses machine learning models (SARIMAX, Prophet, etc.) to generate accurate sales forecasts based on uploaded data. It integrates seamlessly with ERP systems and supports real-time alerts, visualization, and zero-code interaction for non-technical users.
 
-## Quick Start
+## 📦 Key Features
+
+- ✅ **Automated Sales Forecasting**
+- 📊 **Visual Insights with Confidence Intervals**
+- ⚠️ **Real-time Alerts for Stockouts & Overproduction**
+- 🧾 **Custom File Upload Support (Dynamic Columns)**
+- 🔁 **Adaptive Model Selection (SARIMAX / Prophet / Random Forest)**
+- 🔍 **Noise Feature Integration (e.g., holidays, inflation, rainfall)**
+- 🌐 **Open Architecture with REST APIs**
+- 🧩 **Modular Design for Reusability**
+- 🧑‍💻 **Zero-code Interface (HTML + Tailwind + Dropzone)**
+
+## 🧱 Tech Stack
+
+| Layer        | Tools Used                      |
+|--------------|----------------------------------|
+| Backend      | Python, FastAPI                  |
+| Frontend     | HTML, TailwindCSS, Dropzone.js   |
+| Forecasting  | Prophet, SARIMAX (statsmodels), RandomForest |
+| Deployment   | Docker, Azure App Services, or On-prem |
+
+## 🌍 Market Opportunity
+
+With over **63 million MSMEs in India**, poor forecasting leads to massive inventory and production inefficiencies. Even **1% adoption** at a SaaS rate of ₹500–₹1000/month can generate:
+
+- 💰 **₹113–₹226 crore per year** domestically  
+- 🌐 **₹1890 crore (~$226.8M USD)** in potential global revenue
+
+> This product is built as a plug-and-play SaaS that scales easily across industries and countries.
+
+## 💡 Innovativeness
+
+- ⚙️ **Model-Agnostic Design**: Uses the best-fit ML model based on input patterns.
+- 📈 **Noise Integration**: Accounts for holidays, external events, etc.
+- 🧠 **Dynamic Data Parsing**: No fixed column names required.
+- 🔓 **Open REST API**: Easy integration with ERP and cloud systems.
+
+## 🚀 Deployment
+
+### Local Development
+
 ```bash
-# 1) Clone and bootstrap
-npm run bootstrap
-
-# 2) Start all (server + web)
-npm run dev
-
-# Server: http://localhost:4000/api/health
-# Web:    http://localhost:5173
-```
-
-### Upload and forecast (via UI)
-- Open the web app → Upload your CSV/XLSX
-- Choose **Date column**, **Value column**, **Frequency** (D/W/M) and **Horizon**
-- Submit to get forecast + chart + downloadable CSV
-
-### API (cURL)
-```bash
-curl -X POST "http://localhost:4000/api/forecast"   -F "file=@samples/monthly_sales.csv"   -F "dateCol=Date"   -F "valueCol=Sales"   -F "frequency=M"   -F "horizon=6"
-```
-
-## Repo Layout
-```
-server/       Node + TS backend (Express)
-web/          React + Vite frontend
-infra/        docker-compose.yml
-.github/      CI workflows
-samples/      Example datasets
-```
-
-## Next Steps
-- Add auth and per-client storage
-- Persist uploaded files to S3 and forecasts to DB
-- Support Prophet (Python microservice) option for advanced seasonality
-- Add model registry & experiment tracking
+git clone https://github.com/your-repo-name.git
+cd your-repo-name
+pip install -r requirements.txt
+uvicorn main:app --reload
